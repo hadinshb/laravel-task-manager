@@ -1,0 +1,36 @@
+
+name: Run Laravel Tests with Docker
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .env file for testing
+        run: cp .env.example .env
+
+      - name: Build and run the Docker containers
+        run: docker-compose up -d --build
+
+      - name: Wait for services to be ready
+        run: sleep 15
+
+      - name: Run Pest/PHPUnit tests
+        run: docker-compose exec -T app php artisan test
+
+      - name: View logs on failure
+        if: failure()
+        run: docker-compose logs
+
+      - name: Tear down containers
+        if: always()
+        run: docker-compose down
