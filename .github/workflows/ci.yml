@@ -1,5 +1,5 @@
 
-name: Run Tests with Docker
+name: Task Manager CI/CD
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  laravel-tests:
+  build-and-tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,20 +19,29 @@ jobs:
         run: |
           echo "Setting up .env file..."
           cp .env.example .env
-          
-          echo "Building and starting containers..."
-          docker compose up -d --build
-          
-          docker compose restart app
-
-          echo "Waiting for services to stabilize..."
-          sleep 20
-          
+          echo "Building service images..."
+          docker compose build
+          echo "Generating application key..."
+          docker compose run --rm --entrypoint="" app php artisan key:generate
+          echo "Starting containers in background..."
+          docker compose up -d
           echo "Verifying running containers..."
           docker compose ps
 
       - name: Run Pest/PHPUnit tests
-        run: docker compose exec -T app php artisan test
+        id: tests
+        run: |
+          docker compose exec -T app php artisan config:clear
+          docker compose exec -T \
+            -e DB_CONNECTION=sqlite \
+            -e DB_DATABASE=:memory: \
+            -e SESSION_DRIVER=array \
+            -e CACHE_STORE=array \
+            app php artisan test
+
+      - name: View Laravel log on failure
+        if: failure() && steps.tests.outcome == 'failure'
+        run: docker compose exec -T app cat storage/logs/laravel.log
 
       - name: Tear down containers
         if: always()
