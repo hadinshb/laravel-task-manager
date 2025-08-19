@@ -23,6 +23,8 @@ jobs:
           echo "Building and starting containers..."
           docker compose up -d --build
           
+          docker compose restart app
+
           echo "Waiting for services to stabilize..."
           sleep 20
           
