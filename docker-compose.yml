@@ -44,6 +44,26 @@ services:
     networks:
       - taskmanager
 
+  redis:
+    image: redis:7-alpine
+    container_name: taskmanager_redis
+    restart: unless-stopped
+    networks:
+      - taskmanager
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: taskmanager_worker
+    restart: unless-stopped
+    command: php artisan queue:work --sleep=3 --tries=3
+    depends_on:
+      - app
+      - redis
+    networks:
+      - taskmanager
+
 networks:
   taskmanager:
     driver: bridge
