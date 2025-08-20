@@ -6,18 +6,20 @@ use App\Http\Resources\Api\V1\TaskResource;
 use App\Models\Task;
 use App\Http\Requests\Api\V1\UpdateTaskRequest;
 use App\Http\Requests\Api\V1\StoreTaskRequest;
+use App\Actions\Tasks\CreateTaskAction;
+use App\Actions\Tasks\UpdateTaskAction;
 use App\Http\Controllers\Controller;
 
 class TaskController extends Controller
 {
     public function index()
     {
-        return TaskResource::collection(Task::all());
+        return TaskResource::collection(Task::paginate(10));
     }
 
-    public function store(StoreTaskRequest $request)
+    public function store(StoreTaskRequest $request, CreateTaskAction $createTaskAction)
     {
-        $task = Task::create($request->validated());
+        $task = $createTaskAction->execute($request->validated());
 
         return new TaskResource($task);
     }
@@ -27,11 +29,11 @@ class TaskController extends Controller
         return new TaskResource($task);
     }
 
-    public function update(UpdateTaskRequest $request, Task $task)
-    {        
-        $task->update($request->validated());
+    public function update(UpdateTaskRequest $request, Task $task, UpdateTaskAction $updateTaskAction)
+    {      
+        $updatedTask = $updateTaskAction->execute($task, $request->validated());  
         
-        return new TaskResource($task);
+        return new TaskResource($updatedTask);
     }
 
     public function destroy(Task $task)

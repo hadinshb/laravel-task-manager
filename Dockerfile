@@ -31,6 +31,8 @@ FROM php:8.3-fpm-alpine
 
 WORKDIR /var/www
 
+COPY --from=builder /usr/bin/composer /usr/bin/composer
+
 RUN apk add --no-cache \
     oniguruma-dev \
     libpng-dev \
