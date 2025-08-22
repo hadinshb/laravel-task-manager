@@ -1,11 +1,25 @@
+# Normalize line endings for consistency across operating systems.
 * text=auto eol=lf
 
+# Define diff languages for better readability in git.
 *.blade.php diff=html
 *.css diff=css
 *.html diff=html
 *.md diff=markdown
 *.php diff=php
 
+# Exclude development, testing, and documentation files from distribution archives (e.g., when GitHub creates a zip).
 /.github export-ignore
-CHANGELOG.md export-ignore
+/docker export-ignore
+/tests export-ignore
+.editorconfig export-ignore
+.env.example export-ignore
 .styleci.yml export-ignore
+CHANGELOG.md export-ignore
+docker-compose.yml export-ignore
+Dockerfile export-ignore
+phpstan.neon export-ignore
+phpunit.xml export-ignore
+pint.json export-ignore
+postman_collection.json export-ignore
+README.md export-ignore
