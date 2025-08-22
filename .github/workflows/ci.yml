@@ -1,3 +1,4 @@
+# .github/workflows/ci.yml
 
 name: Task Manager CI/CD
 
@@ -27,6 +28,15 @@ jobs:
           docker compose up -d
           echo "Verifying running containers..."
           docker compose ps
+
+      - name: Run Code Quality Checks
+        run: |
+          echo "Running Pint (Code Style)..."
+          docker compose exec -T app ./vendor/bin/pint --test
+          
+          echo "Running PHPStan (Static Analysis)..."
+          docker compose exec -T app ./vendor/bin/phpstan analyse
+
 
       - name: Run Pest/PHPUnit tests
         id: tests

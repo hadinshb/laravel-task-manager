@@ -23,7 +23,6 @@ if [ ! -f "$FLAG_FILE" ]; then
     fi
 
     php artisan migrate --force
-    php artisan db:seed --force
 
     touch "$FLAG_FILE"
     echo "First time setup is complete."
