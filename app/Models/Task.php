@@ -16,6 +16,11 @@ class Task extends Model
 
     protected $casts = [
         'status' => TaskStatus::class,
+        'due_date' => 'datetime',
+    ];
+
+    protected $attributes = [
+        'status' => TaskStatus::Pending,
     ];
 
     public function user(): BelongsTo

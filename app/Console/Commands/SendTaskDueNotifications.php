@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Task;
+use App\Models\User;
 use App\Notifications\TaskDueSoonNotification;
 use Illuminate\Console\Command;
 
@@ -19,7 +20,9 @@ class SendTaskDueNotifications extends Command
         $tasks = Task::whereDate('due_date', $tomorrow)->get();
 
         foreach ($tasks as $task) {
-            $task->user->notify(new TaskDueSoonNotification($task));
+            /** @var User $user */
+            $user = $task->user;
+            $user->notify(new TaskDueSoonNotification($task));
         }
 
         $this->info('Sent '.count($tasks).' due date notifications.');

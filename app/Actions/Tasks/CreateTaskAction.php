@@ -9,6 +9,9 @@ class CreateTaskAction
 {
     public function execute(array $data, User $user): Task
     {
-        return $user->tasks()->create($data);
+        /** @var Task $task */
+        $task = $user->tasks()->create($data);
+
+        return $task;
     }
 }
