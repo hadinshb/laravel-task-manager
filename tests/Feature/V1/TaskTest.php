@@ -7,6 +7,7 @@ use App\Models\Task;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
+
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\getJson;
@@ -48,7 +49,7 @@ test('a user can create a task', function () {
 test('a user can get a single task they own', function () {
     $task = Task::factory()->create(['user_id' => $this->user->id]);
 
-    getJson('/api/v1/tasks/' . $task->id)
+    getJson('/api/v1/tasks/'.$task->id)
         ->assertStatus(200)
         ->assertJsonFragment(['id' => $task->id]);
 });
@@ -56,7 +57,7 @@ test('a user can get a single task they own', function () {
 test('a user cannot get a task they do not own', function () {
     $task = Task::factory()->create();
 
-    getJson('/api/v1/tasks/' . $task->id)
+    getJson('/api/v1/tasks/'.$task->id)
         ->assertStatus(403);
 });
 
@@ -71,7 +72,7 @@ test('a user can update a task they own', function () {
         'status' => TaskStatus::Completed->value,
     ];
 
-    putJson('/api/v1/tasks/' . $task->id, $updateData)
+    putJson('/api/v1/tasks/'.$task->id, $updateData)
         ->assertStatus(200)
         ->assertJsonFragment(['title' => 'Updated Title', 'status' => 'completed']);
 });
@@ -79,6 +80,6 @@ test('a user can update a task they own', function () {
 test('a user can delete a task they own', function () {
     $task = Task::factory()->create(['user_id' => $this->user->id]);
 
-    deleteJson('/api/v1/tasks/' . $task->id)
+    deleteJson('/api/v1/tasks/'.$task->id)
         ->assertStatus(204);
 });

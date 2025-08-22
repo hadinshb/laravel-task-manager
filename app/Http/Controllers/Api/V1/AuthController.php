@@ -26,7 +26,7 @@ class AuthController extends Controller
     {
         $user = $loginUser->execute($request->validated());
 
-        if (!$user) {
+        if (! $user) {
             return response()->json(['message' => 'Invalid login details'], 401);
         }
 

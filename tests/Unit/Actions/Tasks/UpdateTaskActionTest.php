@@ -11,16 +11,16 @@ class UpdateTaskActionTest extends TestCase
 {
     public function test_execute(): void
     {
-         $updateData = [
+        $updateData = [
             'title' => 'Updated Title',
         ];
-        
+
         $taskMock = $this->mock(Task::class, function (MockInterface $mock) {
             $mock->shouldReceive('update')
                 ->once();
         });
 
-        $action = new UpdateTaskAction();
+        $action = new UpdateTaskAction;
         $action->execute($taskMock, $updateData);
     }
 }

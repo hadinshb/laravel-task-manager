@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Api\V1\Task;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Enums\TaskStatus;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
 class StoreTaskRequest extends FormRequest

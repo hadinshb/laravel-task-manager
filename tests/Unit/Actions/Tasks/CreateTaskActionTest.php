@@ -25,7 +25,7 @@ class CreateTaskActionTest extends TestCase
             $mock->shouldReceive('tasks')->once()->andReturn($relationshipMock);
         });
 
-        $action = new CreateTaskAction();
+        $action = new CreateTaskAction;
         $result = $action->execute($taskData, $userMock);
 
         $this->assertInstanceOf(Task::class, $result);

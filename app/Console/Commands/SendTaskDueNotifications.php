@@ -9,6 +9,7 @@ use Illuminate\Console\Command;
 class SendTaskDueNotifications extends Command
 {
     protected $signature = 'tasks:send-due-notifications';
+
     protected $description = 'Send notifications for tasks that are due tomorrow.';
 
     public function handle()
@@ -21,6 +22,6 @@ class SendTaskDueNotifications extends Command
             $task->user->notify(new TaskDueSoonNotification($task));
         }
 
-        $this->info("Sent " . count($tasks) . " due date notifications.");
+        $this->info('Sent '.count($tasks).' due date notifications.');
     }
 }

@@ -9,7 +9,7 @@ class LoginUserAction
 {
     public function execute(array $credentials): ?User
     {
-        if (!Auth::attempt($credentials)) {
+        if (! Auth::attempt($credentials)) {
             return null;
         }
 

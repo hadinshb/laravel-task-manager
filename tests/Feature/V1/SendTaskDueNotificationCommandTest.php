@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Notifications\TaskDueSoonNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
+
 use function Pest\Laravel\artisan;
 
 uses(RefreshDatabase::class);

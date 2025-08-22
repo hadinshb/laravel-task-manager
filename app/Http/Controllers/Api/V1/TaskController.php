@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Resources\Api\V1\TaskResource;
-use App\Models\Task;
-use App\Http\Requests\Api\V1\Task\UpdateTaskRequest;
-use App\Http\Requests\Api\V1\Task\StoreTaskRequest;
 use App\Actions\Tasks\CreateTaskAction;
 use App\Actions\Tasks\UpdateTaskAction;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Api\V1\Task\StoreTaskRequest;
+use App\Http\Requests\Api\V1\Task\UpdateTaskRequest;
+use App\Http\Resources\Api\V1\TaskResource;
+use App\Models\Task;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -32,6 +31,7 @@ class TaskController extends Controller
     public function show(Task $task)
     {
         $this->authorize('view', $task);
+
         return new TaskResource($task);
     }
 
